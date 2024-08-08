@@ -34,6 +34,11 @@ public class DocumentoServiceImpl implements DocumentoService {
         return dao.findById(id);
     }
 
+    @Override
+    public List<Documento> buscarDocumentosPorIdBeneficiario(Long id) {
+        return dao.findByBeneficiarioId(id);
+    }
+
     @Override @Transactional(readOnly = true)
     public List<Documento> buscarTodos() {
         return dao.findAll();

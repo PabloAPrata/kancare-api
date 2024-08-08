@@ -15,5 +15,7 @@ public interface DocumentoService {
 
     Documento buscarPorId(Long id);
 
+    List<Documento> buscarDocumentosPorIdBeneficiario(Long id);
+
     List<Documento> buscarTodos();
 }
