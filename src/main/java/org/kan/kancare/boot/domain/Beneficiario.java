@@ -21,7 +21,7 @@ public class Beneficiario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Informe um nome")
     @Size(min = 3, max = 60, message = "O nome do beneficiario deve ter entre {min} e {max} caracteres.")
@@ -44,7 +44,7 @@ public class Beneficiario {
     @Column(name= "data_atualizacao", columnDefinition = "DATE")
     private LocalDate dataAtualizacao;
 
-    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Documento.class, cascade = CascadeType.ALL)
     private List<Documento> documentos;
 
     @PreUpdate
