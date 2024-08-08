@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("beneficiarios")
 public class BeneficiarioController {
