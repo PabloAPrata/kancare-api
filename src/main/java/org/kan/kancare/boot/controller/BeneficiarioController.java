@@ -88,7 +88,7 @@ public class BeneficiarioController {
                 .status(HttpStatus.OK.value())
                 .message("Beneficiário removido com sucesso.")
                 .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 }
 
