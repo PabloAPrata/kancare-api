@@ -1,5 +1,6 @@
 package org.kan.kancare.boot.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.kan.kancare.boot.domain.Beneficiario;
 import org.kan.kancare.boot.domain.Documento;
@@ -39,10 +40,21 @@ public class BeneficiarioController {
         return new ResponseEntity<>(documentos, HttpStatus.OK);
     }
 
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<String> atualizarBeneficiario(@PathVariable Long id,
+                                                        @Valid @RequestBody Beneficiario beneficiarioAtualizado) {
+        try {
+            service.editar(id, beneficiarioAtualizado);
+            return new ResponseEntity<>("Beneficiário atualizado com sucesso", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removerBeneficiario(@PathVariable Long id) {
         service.excluir(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
 

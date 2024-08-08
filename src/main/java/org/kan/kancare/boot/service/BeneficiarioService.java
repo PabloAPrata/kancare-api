@@ -9,7 +9,7 @@ public interface BeneficiarioService {
 
     void salvar(Beneficiario beneficiario);
 
-    void editar(Beneficiario beneficiario);
+    void editar(Long id, Beneficiario beneficiario);
 
     void excluir(Long id);
 

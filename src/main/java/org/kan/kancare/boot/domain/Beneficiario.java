@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import jakarta.persistence.*;
-import lombok.*;
 import lombok.NoArgsConstructor;
 
 
@@ -22,7 +20,7 @@ import java.util.List;
 public class Beneficiario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "Informe um nome")
@@ -46,6 +44,17 @@ public class Beneficiario {
     @Column(name= "data_atualizacao", columnDefinition = "DATE")
     private LocalDate dataAtualizacao;
 
-    @OneToMany(targetEntity = Documento.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL)
     private List<Documento> documentos;
+
+    @PreUpdate
+    protected void preUpdate() {
+        this.dataAtualizacao = LocalDate.now();
+    }
+
+    @PrePersist
+    protected void prePersist() {
+        this.dataInclusao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now();
+    }
 }

@@ -1,5 +1,6 @@
 package org.kan.kancare.boot.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.kan.kancare.boot.dao.BeneficiarioDao;
 import org.kan.kancare.boot.domain.Beneficiario;
 import org.kan.kancare.boot.domain.Documento;
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service @Transactional(readOnly = false)
+@Service
 public class BeneficiarioServiceImpl implements BeneficiarioService {
 
     @Autowired
@@ -17,12 +18,21 @@ public class BeneficiarioServiceImpl implements BeneficiarioService {
 
     @Override
     public void salvar(Beneficiario beneficiario) {
-        System.out.println(beneficiario.toString());
         dao.save(beneficiario);
     }
 
     @Override
-    public void editar(Beneficiario beneficiario) {
+    public void editar(Long id, Beneficiario beneficiarioAtualizado) {
+        Beneficiario beneficiario = buscarPorId(id);
+        if (beneficiario == null) {
+            throw new EntityNotFoundException("Beneficiário não encontrado.");
+        }
+
+        beneficiario.setNome(beneficiarioAtualizado.getNome());
+        beneficiario.setTelefone(beneficiarioAtualizado.getTelefone());
+        beneficiario.setDataNascimento(beneficiarioAtualizado.getDataNascimento());
+        beneficiario.setDocumentos(beneficiarioAtualizado.getDocumentos());
+
         dao.update(beneficiario);
     }
 
@@ -31,7 +41,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService {
         dao.delete(id);
     }
 
-    @Override
+    @Override @Transactional(readOnly = true)
     public List<Documento> buscarDocumentosPorBeneficiario(Long id) {
         Beneficiario beneficiaryById = dao.findById(id);
         return beneficiaryById.getDocumentos();

@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import java.time.LocalDate;
 public class Documento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "O tipo do documento não pode estar vazio.")
@@ -42,4 +41,15 @@ public class Documento {
     @ManyToOne
     @JoinColumn(name = "id_beneficiario_fk")
     private Beneficiario beneficiario;
+
+    @PreUpdate
+    protected void preUpdate() {
+        this.dataAtualizacao = LocalDate.now();
+    }
+
+    @PrePersist
+    protected void prePersist() {
+        this.dataInclusao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now();
+    }
 }
