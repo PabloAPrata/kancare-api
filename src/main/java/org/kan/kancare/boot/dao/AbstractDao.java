@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractDao<T, PK extends Serializable> {
     @SuppressWarnings("unchecked")
@@ -47,12 +48,15 @@ public abstract class AbstractDao<T, PK extends Serializable> {
                 .getResultList();
     }
 
-    protected List<T> createQuery(String jpql, Object... params) {
+    protected List<T> createQuery(String jpql, Map<String, Object> params) {
+        System.out.println(jpql);
         TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
-        for (int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
         }
+        System.out.println(query.getResultList());
         return query.getResultList();
     }
+
 
 }

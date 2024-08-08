@@ -18,6 +18,5 @@ public interface DocumentoDao {
 
     List<Documento> findAll();
 
-    @Query("SELECT d FROM Documento d WHERE d.beneficiario.id = :beneficiarioId")
-    List<Documento> findByBeneficiarioId(@Param("beneficiarioId") Long beneficiarioId);
+    List<Documento> findByBeneficiarioId(Long beneficiarioId);
 }

@@ -2,6 +2,7 @@ package org.kan.kancare.boot.controller;
 
 import jakarta.validation.Valid;
 import org.kan.kancare.boot.domain.Beneficiario;
+import org.kan.kancare.boot.domain.Documento;
 import org.kan.kancare.boot.service.BeneficiarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,14 @@ public class BeneficiarioController {
     public ResponseEntity<List<Beneficiario>> listarBeneficiarios() {
         List<Beneficiario> beneficiariosList = service.buscarTodos();
         return new ResponseEntity<>(beneficiariosList, HttpStatus.OK);
+    }
+
+    @GetMapping("/documentos/{id}")
+    public ResponseEntity<List<Documento>> listarDocumentosPorBeneficiario(@PathVariable Long id) {
+
+        List<Documento> documentos = service.buscarDocumentosPorBeneficiario(id);
+
+        return new ResponseEntity<>(documentos, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Data
 public abstract class AbstractEntity<ID extends Serializable> implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private ID id;
 }
