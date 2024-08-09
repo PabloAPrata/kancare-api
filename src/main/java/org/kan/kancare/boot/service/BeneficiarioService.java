@@ -2,6 +2,8 @@ package org.kan.kancare.boot.service;
 
 import org.kan.kancare.boot.domain.Beneficiario;
 import org.kan.kancare.boot.domain.Documento;
+import org.kan.kancare.boot.dto.BeneficiarioResposta;
+import org.kan.kancare.boot.dto.DocumentoResposta;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface BeneficiarioService {
 
     Beneficiario buscarPorId(Long id);
 
-    List<Documento> buscarDocumentosPorBeneficiario(Long id);
+    List<DocumentoResposta> buscarDocumentosPorBeneficiario(Long id);
 
-    List<Beneficiario> buscarTodos();
+    List<BeneficiarioResposta> buscarTodos();
 }

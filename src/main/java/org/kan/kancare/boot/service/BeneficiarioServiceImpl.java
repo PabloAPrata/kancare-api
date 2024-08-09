@@ -4,11 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import org.kan.kancare.boot.dao.BeneficiarioDao;
 import org.kan.kancare.boot.domain.Beneficiario;
 import org.kan.kancare.boot.domain.Documento;
+import org.kan.kancare.boot.dto.BeneficiarioResposta;
+import org.kan.kancare.boot.dto.DocumentoResposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @Transactional
 public class BeneficiarioServiceImpl implements BeneficiarioService {
@@ -42,9 +45,19 @@ public class BeneficiarioServiceImpl implements BeneficiarioService {
     }
 
     @Override @Transactional(readOnly = true)
-    public List<Documento> buscarDocumentosPorBeneficiario(Long id) {
+    public List<DocumentoResposta> buscarDocumentosPorBeneficiario(Long id) {
         Beneficiario beneficiaryById = dao.findById(id);
-        return beneficiaryById.getDocumentos();
+
+        List<Documento> listaDocumentos = beneficiaryById.getDocumentos();
+
+        return listaDocumentos.stream()
+                .map(documento -> DocumentoResposta.builder()
+                        .tipoDocumento(documento.getTipoDocumento())
+                        .descricao(documento.getDescricao())
+                        .dataInclusao(documento.getDataInclusao())
+                        .dataAtualizacao(documento.getDataAtualizacao())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override @Transactional(readOnly = true)
@@ -53,7 +66,19 @@ public class BeneficiarioServiceImpl implements BeneficiarioService {
     }
 
     @Override @Transactional(readOnly = true)
-    public List<Beneficiario> buscarTodos() {
-        return dao.findAll();
+    public List<BeneficiarioResposta> buscarTodos() {
+
+        List<Beneficiario> listaBeneficiarios = dao.findAll();
+
+        return listaBeneficiarios.stream()
+                .map(beneficiario -> BeneficiarioResposta.builder()
+                        .nome(beneficiario.getNome())
+                        .telefone(beneficiario.getTelefone())
+                        .dataNascimento(beneficiario.getDataNascimento())
+                        .dataInclusao(beneficiario.getDataInclusao())
+                        .dataAtualizacao(beneficiario.getDataInclusao())
+                        .build())
+                .collect(Collectors.toList());
+
     }
 }
